@@ -8,28 +8,24 @@ import axios from "axios";
 import { AppConfig } from "../constants/Constants";
 import { MiningIncome } from "../types/MiningIncome";
 
-const getMiningIncome = async () => {
+const convert2THB = (price: any, marketPrice: number) => {
+  return `${(marketPrice * parseFloat(price)).toFixed(2)} ${AppConfig.CURRENCY}`;
+}
+
+const getMiningIncome = async (marketPrice: number) => {
   let miningIncom: any = {};
+
+  console.log(marketPrice)
 
   await axios
     .get<MiningIncome>(
       `${AppConfig.API_URL}wallet?address=${AppConfig.AUTH_TOKEN}`
     )
     .then(async (response) => {
-      let { currency, unsold, balance, unpaid, paid24h, paidtotal, total } =
-        response.data;
       const obj = response.data;
       miningIncom = obj || null;
 
       while (miningIncom == null) {
-        console.log(`currency : ${currency}`);
-        console.log(`unsold : ${unsold}`);
-        console.log(`balance : ${balance}`);
-        console.log(`unpaid : ${unpaid}`);
-        console.log(`paid24h : ${paid24h}`);
-        console.log(`paidtotal : ${paidtotal}`);
-        console.log(`total : ${total}`);
-
         await axios
           .get<MiningIncome>(
             `${AppConfig.API_URL}wallet?address=${AppConfig.AUTH_TOKEN}`
@@ -47,14 +43,16 @@ const getMiningIncome = async () => {
 
   //For Line Notify format
   return `
-  
-currency : ${miningIncom?.currency}
-unsold : ${miningIncom?.unsold}
-balance : ${miningIncom?.balance}
-unpaid : ${miningIncom?.unpaid}
-paid24h : ${miningIncom?.paid24h}
-paidtotal : ${miningIncom?.paidtotal}
-total : ${miningIncom?.total}
+Currency: ${miningIncom?.currency}
+
+- Unpaid: ${miningIncom?.unpaid.toFixed(2)}  (${convert2THB(miningIncom?.unpaid.toFixed(2), marketPrice )})
+- Unsold: ${miningIncom?.unsold.toFixed(2)}  (${convert2THB(miningIncom?.unsold.toFixed(2), marketPrice )})
+- Balance: ${miningIncom?.balance.toFixed(2)}  (${convert2THB(miningIncom?.balance.toFixed(2), marketPrice )})
+
+- Paid (24H): ${miningIncom?.paid24h.toFixed(2)}  (${convert2THB(miningIncom?.paid24h.toFixed(2), marketPrice )})
+- Paid Total: ${miningIncom?.paidtotal.toFixed(2)}  (${convert2THB(miningIncom?.paidtotal.toFixed(2), marketPrice )})
+
+• Total: ${miningIncom?.total.toFixed(2)}  (${convert2THB(miningIncom?.total.toFixed(2), marketPrice )})
   `;
 };
 

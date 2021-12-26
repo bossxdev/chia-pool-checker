@@ -11,11 +11,14 @@ dotenv.config();
 import { AppConfig } from "./constants/Constants";
 import { getMiningIncome } from "./util/Hpool";
 import { sendLineNotify } from "./util/LineNotify";
+import { getPriceMarketCap } from './util/MarketCap';
 
 const runTask = async () => {
   try {
-    const miningIncome = await getMiningIncome();
-    console.log("miningIncome -->", miningIncome);
+    const pricevalue = await getPriceMarketCap('dogecoin');
+    let marketPrice = parseFloat(pricevalue.replace(/[฿]/g, m => '').replace(/[$]/g, m => '').replace(/[,]/g, m => ''));
+
+    const miningIncome = await getMiningIncome(marketPrice);
 
     if (Boolean(AppConfig.ENABLE_LINE_NOTIFY))
       await sendLineNotify(`${miningIncome}`);
