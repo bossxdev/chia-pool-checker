@@ -11,12 +11,17 @@ dotenv.config();
 import { AppConfig } from "./constants/Constants";
 import { getMiningIncome } from "./util/Hpool";
 import { sendLineNotify } from "./util/LineNotify";
-import { getPriceMarketCap } from './util/MarketCap';
+import { getPriceMarketCap } from "./util/MarketCap";
 
 const runTask = async () => {
   try {
-    const pricevalue = await getPriceMarketCap('dogecoin');
-    let marketPrice = parseFloat(pricevalue.replace(/[฿]/g, m => '').replace(/[$]/g, m => '').replace(/[,]/g, m => ''));
+    const pricevalue = await getPriceMarketCap("dogecoin");
+    let marketPrice = parseFloat(
+      pricevalue
+        .replace(/[฿]/g, (m) => "")
+        .replace(/[$]/g, (m) => "")
+        .replace(/[,]/g, (m) => "")
+    );
 
     const miningIncome = await getMiningIncome(marketPrice);
 
@@ -29,28 +34,24 @@ const runTask = async () => {
 
 const jobs = [
   {
-    pattern: "00 08 * * *",
-    message: "Recheck hpool 08:00",
+    pattern: "30 08 * * *",
+    message: "Recheck hpool 08:30",
   },
   {
-    pattern: "00 10 * * *",
-    message: "Recheck hpool in 10:00",
+    pattern: "35 10 * * *",
+    message: "Recheck hpool in 10:35",
   },
   {
     pattern: "0 12 * * *",
     message: "Recheck hpool in 12:00",
   },
   {
-    pattern: "0 15 * * *",
-    message: "Recheck hpool 15:00",
-  },
-  {
     pattern: "0 18 * * *",
     message: "Recheck hpool 18:00",
   },
   {
-    pattern: "0 0 * * *",
-    message: "Recheck hpool 00:00",
+    pattern: "0 22 * * *",
+    message: "Recheck hpool 22:00",
   },
 ];
 
