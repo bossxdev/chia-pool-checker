@@ -18,9 +18,9 @@ const runTask = async () => {
     const pricevalue = await getPriceMarketCap("dogecoin");
     let marketPrice = parseFloat(
       pricevalue
-        .replace(/[฿]/g, (m) => "")
-        .replace(/[$]/g, (m) => "")
-        .replace(/[,]/g, (m) => "")
+        .replace(/[฿]/g, () => "")
+        .replace(/[$]/g, () => "")
+        .replace(/[,]/g, () => "")
     );
 
     const miningIncome = await getMiningIncome(marketPrice);
@@ -45,14 +45,14 @@ const jobs = [
     pattern: "0 12 * * *",
     message: "Recheck hpool in 12:00",
   },
-  // {
-  //   pattern: "0 18 * * *",
-  //   message: "Recheck hpool 18:00",
-  // },
   {
-    pattern: "0 22 * * *",
-    message: "Recheck hpool 22:00",
+    pattern: "0 18 * * *",
+    message: "Recheck hpool 18:00",
   },
+  // {
+  //   pattern: "0 22 * * *",
+  //   message: "Recheck hpool 22:00",
+  // },
 ];
 
 console.log("Add task");
