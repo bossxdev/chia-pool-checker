@@ -19,7 +19,7 @@ const getPriceMarketCap = async (currency: string) => {
     await axios.get(`https://coinmarketcap.com/currencies/${currency}/`, HEADER).then((res) => {
         const dom = new JSDOM(res.data);
         dom.window.document.querySelectorAll('div').forEach(d => {
-            if (d.className.includes('sc-16891c57-0 hqcKQB flexStart alignBaseline')) {
+            if (d.className.includes('sc-f70bb44c-0 flfGQp flexStart alignBaseline')) {
                 priceValue = d?.textContent;
                 //console.log('XCH Market Price:', d?.textContent);
                 return;
@@ -28,6 +28,7 @@ const getPriceMarketCap = async (currency: string) => {
     }).catch((err) => console.log(err));
     return priceValue;
 }
+
 
 
 export { getPriceMarketCap }
