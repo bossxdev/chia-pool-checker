@@ -14,21 +14,24 @@ const HEADER = {
         Cookie: `currency=${AppConfig.CURRENCY}`,
     },
 };
-const getPriceMarketCap = async (currency: string) => {
-    var priceValue: string | null = '';
-    await axios.get(`https://coinmarketcap.com/currencies/${currency}/`, HEADER).then((res) => {
+
+const getPriceMarketCap = async (currency: string): Promise<string> => {
+    let priceValue: string | null = null;
+    try {
+        const res = await axios.get(`https://coinmarketcap.com/currencies/${currency}/`, HEADER);
         const dom = new JSDOM(res.data);
-        dom.window.document.querySelectorAll('div').forEach(d => {
-            if (d.className.includes('sc-f70bb44c-0 flfGQp flexStart alignBaseline')) {
-                priceValue = d?.textContent;
-                //console.log('XCH Market Price:', d?.textContent);
-                return;
-            }
-        });
-    }).catch((err) => console.log(err));
-    return priceValue;
+        const priceElement = dom.window.document.querySelector('span.sc-65e7f566-0.clvjgF.base-text');
+
+        if (priceElement) {
+            priceValue = priceElement.textContent;
+        } else {
+            console.log('Price element not found.');
+        }
+    } catch (err) {
+        console.error('Error fetching price:', err);
+    }
+
+    return priceValue ?? 'Price not available';
 }
-
-
 
 export { getPriceMarketCap }
