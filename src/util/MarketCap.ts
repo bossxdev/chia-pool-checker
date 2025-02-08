@@ -20,7 +20,7 @@ const getPriceMarketCap = async (currency: string): Promise<string> => {
     try {
         const res = await axios.get(`https://coinmarketcap.com/currencies/${currency}/`, HEADER);
         const dom = new JSDOM(res.data);
-        const priceElement = dom.window.document.querySelector('span.sc-65e7f566-0.clvjgF.base-text');
+        const priceElement = dom.window.document.querySelector('span.sc-65e7f566-0.WXGwg.base-text');
 
         if (priceElement) {
             priceValue = priceElement.textContent;
