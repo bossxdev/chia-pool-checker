@@ -15,7 +15,7 @@ const convert2THB = (price: any, marketPrice: number) => {
 const getMiningIncome = async (marketPrice: number) => {
   let miningIncom: any = {};
 
-  console.log(marketPrice)
+  // console.log(marketPrice)
 
   await axios
     .get<MiningIncome>(
@@ -45,14 +45,14 @@ const getMiningIncome = async (marketPrice: number) => {
   return `
 Currency: ${miningIncom?.currency}
 
-- Unpaid: ${miningIncom?.unpaid.toFixed(2)}  (${convert2THB(miningIncom?.unpaid.toFixed(2), marketPrice )})
-- Unsold: ${miningIncom?.unsold.toFixed(2)}  (${convert2THB(miningIncom?.unsold.toFixed(2), marketPrice )})
-- Balance: ${miningIncom?.balance.toFixed(2)}  (${convert2THB(miningIncom?.balance.toFixed(2), marketPrice )})
+- Unpaid: ${miningIncom?.unpaid.toFixed(2)}  DOGE
+- Unsold: ${miningIncom?.unsold.toFixed(2)}  DOGE
+- Balance: ${miningIncom?.balance.toFixed(2)}  DOGE
 
-- Paid (24H): ${miningIncom?.paid24h.toFixed(2)}  (${convert2THB(miningIncom?.paid24h.toFixed(2), marketPrice )})
-- Paid Total: ${miningIncom?.paidtotal.toFixed(2)}  (${convert2THB(miningIncom?.paidtotal.toFixed(2), marketPrice )})
+- Paid (24H): ${miningIncom?.paid24h.toFixed(2)}  DOGE
+- Paid Total: ${miningIncom?.paidtotal.toFixed(2)}  DOGE
 
-• Total: ${miningIncom?.total.toFixed(2)}  (${convert2THB(miningIncom?.total.toFixed(2), marketPrice )})
+• Total: ${miningIncom?.total.toFixed(2)}  DOGE
   `;
 };
 
